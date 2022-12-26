@@ -1,5 +1,7 @@
 package com.driver;
 
+import java.util.regex.*;
+
 public class Email {
 
     private String emailId;
@@ -9,10 +11,6 @@ public class Email {
         this.emailId = emailId;
         this.password = "Accio@123";
     }
-
-    public Email() {
-    }
-
 
     public String getEmailId() {
         return emailId;
@@ -24,22 +22,20 @@ public class Email {
 
     public void changePassword(String oldPassword, String newPassword){
         //Change password only if the oldPassword is equal to current password and the new password meets all of the following:
-
-        if(this.password.equals(oldPassword)){
-            if(newPassword.length()>=8 && checkUpperCase(newPassword) && checkLowerCase(newPassword) && checkSpecialChar(newPassword)){
-
-                this.password = newPassword;
-            }
-        }
         // 1. It contains at least 8 characters
         // 2. It contains at least one uppercase letter
         // 3. It contains at least one lowercase letter
         // 4. It contains at least one digit
         // 5. It contains at least one special character. Any character apart from alphabets and digits is a special character
+
+        if(this.password.equals(oldPassword))
+        {
+            if(newPassword.length()>=8 && checkUpperCase(newPassword) && checkLowerCase(newPassword) && checkNumber(newPassword) && checkSpecialCharacter(newPassword))
+            {
+                this.password=newPassword;
+            }
+        }
     }
-
-
-    //Function to check if any UPPER case letter is included in newPassword
     public boolean checkUpperCase(String str)
     {
         for(int i=0;i<str.length();i++)
@@ -51,35 +47,42 @@ public class Email {
         }
         return false;
     }
-
-    //Function to check if any lower case letter is included in newpassword
     public boolean checkLowerCase(String str)
     {
-        for(int i=0; i<=str.length(); i++){
-            if(str.charAt(i) >= 'a' && str.charAt(i) <= 'z'){
+        for(int i=0;i<str.length();i++)
+        {
+            if(str.charAt(i)>='a' && str.charAt(i)<='z')
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+    public boolean checkNumber(String str)
+    {
+        for(int i=0;i<str.length();i++)
+        {
+            if(str.charAt(i)>='0' && str.charAt(i)<='9')
+            {
                 return true;
             }
         }
         return false;
     }
 
-    //Function to check if any Special Character is included in newPassword
-    public boolean checkSpecialChar(String str){
+    public boolean checkSpecialCharacter(String str)
+    {
+        boolean flag=false;
+        for (int i = 0; i < str.length(); i++) {
 
-        String specialChar = "!\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~";
-        for(int i=0; i<=str.length(); i++){
-            if(specialChar.contains(Character.toString(str.charAt(i)))){
-                return true;
+            // Checking the character for not being a
+            // letter,digit or space
+            if (!Character.isDigit(str.charAt(i)) && !Character.isLetter(str.charAt(i)))
+            {
+                flag=true;
+                break;
             }
         }
-        return false;
+        return flag;
     }
-
-
-
-
-
-
 }
-
-
